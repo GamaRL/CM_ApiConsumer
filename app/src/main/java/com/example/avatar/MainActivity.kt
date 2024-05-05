@@ -2,14 +2,19 @@ package com.example.avatar
 
 import android.os.Bundle
 import android.util.Log
-import androidx.activity.enableEdgeToEdge
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.avatar.databinding.ActivityMainBinding
 import com.example.avatar.models.AvatarCharacter
+import com.example.avatar.services.ApiService
+import com.example.avatar.utils.Constants
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 class MainActivity : AppCompatActivity() {
 
@@ -22,25 +27,36 @@ class MainActivity : AppCompatActivity() {
 
         setContentView(binding.root)
 
-        val chars = ArrayList<AvatarCharacter>()
+        val retrofit = Retrofit.Builder()
+            .baseUrl(Constants.BASE_URL)
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
 
-        for (i in 1 .. 100) {
-            chars.add(
-                AvatarCharacter(
-                    "5cf5679a915ecad153ab68d$i",
-                    "This is Aang $i",
-                    "Earth Kingdom Air Force"
-                )
-            )
+        val apiService = retrofit.create(ApiService::class.java)
 
-            Log.i(this.javaClass.toString(),i.toString())
-        }
+        val call : Call<List<AvatarCharacter>> = apiService.getCharacters("characters?", "perPage=497")
 
-        val adapterAvatar = AvatarCharacterAdapter(chars)
+        call.enqueue(object: Callback<List<AvatarCharacter>>{
+            override fun onResponse(
+                p0: Call<List<AvatarCharacter>>,
+                response: Response<List<AvatarCharacter>>
+            ) {
+                Log.d("HOLA", "Respuesta recibida ${response.body()}")
 
-        binding.rvMain.apply {
-            layoutManager = LinearLayoutManager(this@MainActivity, RecyclerView.VERTICAL, false)
-            adapter = adapterAvatar
-        }
+                response.body()?.let {
+                    avatarCharacters ->
+                    val characterAdapter = AvatarCharacterAdapter(avatarCharacters)
+
+                    binding.rvMain.apply {
+                        layoutManager = LinearLayoutManager(this@MainActivity)
+                        adapter = characterAdapter
+                    }
+                }
+            }
+
+            override fun onFailure(p0: Call<List<AvatarCharacter>>, p1: Throwable) {
+                Toast.makeText(this@MainActivity, "No hay conexión disponible", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 }

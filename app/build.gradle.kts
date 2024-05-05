@@ -46,8 +46,9 @@ dependencies {
     implementation(libs.androidx.activity)
     implementation(libs.androidx.constraintlayout)
 
-    //Retrofit
+    //Para retrofit y Gson
     implementation(libs.retrofit)
+    implementation(libs.converter.gson)
 
     //Adicional para el interceptor
     implementation(libs.logging.interceptor)
