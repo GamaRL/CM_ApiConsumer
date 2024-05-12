@@ -2,20 +2,32 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="0dp"
-    android:layout_height="0dp"
-    android:layout_margin="10dp"
-    android:background="#B3424242">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:foreground="@drawable/custom_ripple"
+    android:paddingTop="8dp"
+    android:paddingStart="8dp"
+    android:paddingEnd="8dp">
+
+    <View
+        android:id="@+id/viewBackground"
+        android:layout_width="match_parent"
+        android:layout_height="132dp"
+        android:background="@drawable/background_character"
+        android:paddingBottom="10dp"
+        app:layout_constraintBottom_toTopOf="@+id/guideline2"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="-5dp" />
 
     <TextView
         android:id="@+id/tvName"
-        android:layout_width="224dp"
+        android:layout_width="261dp"
         android:layout_height="25dp"
         android:layout_marginEnd="16dp"
-        android:text="TextView"
         android:textAlignment="gravity"
-        android:textColor="@color/design_default_color_primary"
+        android:textColor="@color/white"
         android:textSize="16sp"
+        android:textStyle="bold|italic"
         app:layout_constraintBottom_toTopOf="@+id/guideline"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -28,7 +40,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="64dp" />
+        app:layout_constraintGuide_begin="68dp" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline2"
@@ -43,19 +55,20 @@
         android:layout_height="100dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
+        android:importantForAccessibility="no"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@mipmap/ic_character" />
 
     <TextView
         android:id="@+id/tvAffiliation"
-        android:layout_width="224dp"
-        android:layout_height="68dp"
+        android:layout_width="261dp"
+        android:layout_height="64dp"
         android:layout_marginEnd="16dp"
-        android:text="TextView"
         android:textAlignment="gravity"
-        android:textColor="@color/white"
+        android:textColor="@android:color/holo_orange_light"
         android:textSize="12sp"
+        android:textStyle="normal"
         app:layout_constraintBottom_toTopOf="@+id/guideline2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

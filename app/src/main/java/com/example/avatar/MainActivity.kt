@@ -1,13 +1,16 @@
 package com.example.avatar
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.avatar.databinding.ActivityMainBinding
 import com.example.avatar.models.AvatarCharacter
+import com.example.avatar.models.AvatarCharacterDetail
 import com.example.avatar.services.ApiService
 import com.example.avatar.utils.Constants
 import retrofit2.Call
@@ -34,18 +37,16 @@ class MainActivity : AppCompatActivity() {
 
         val apiService = retrofit.create(ApiService::class.java)
 
-        val call : Call<List<AvatarCharacter>> = apiService.getCharacters("characters?", "perPage=497")
+        val call : Call<List<AvatarCharacter>> = apiService.getCharacters("perPage=497")
 
         call.enqueue(object: Callback<List<AvatarCharacter>>{
             override fun onResponse(
                 p0: Call<List<AvatarCharacter>>,
                 response: Response<List<AvatarCharacter>>
             ) {
-                Log.d("HOLA", "Respuesta recibida ${response.body()}")
-
                 response.body()?.let {
                     avatarCharacters ->
-                    val characterAdapter = AvatarCharacterAdapter(avatarCharacters)
+                    val characterAdapter = AvatarCharacterAdapter(avatarCharacters, ::showDetails)
 
                     binding.rvMain.apply {
                         layoutManager = LinearLayoutManager(this@MainActivity)
@@ -58,5 +59,14 @@ class MainActivity : AppCompatActivity() {
                 Toast.makeText(this@MainActivity, "No hay conexión disponible", Toast.LENGTH_SHORT).show()
             }
         })
+    }
+
+    fun showDetails(character: AvatarCharacter) {
+        val intent = Intent(this, CharacterActivity::class.java)
+
+        intent.putExtra("id", character.id)
+
+        startActivity(intent)
+
     }
 }

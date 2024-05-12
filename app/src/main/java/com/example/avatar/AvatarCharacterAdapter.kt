@@ -6,8 +6,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.avatar.databinding.ItemListBinding
 import com.example.avatar.models.AvatarCharacter
+import com.example.avatar.models.AvatarCharacterDetail
 
-class AvatarCharacterAdapter(private val characters: List<AvatarCharacter>) : RecyclerView.Adapter<AvatarCharacterViewHolder>() {
+class AvatarCharacterAdapter(private val characters: List<AvatarCharacter>, private val clickListener: (AvatarCharacter) -> Unit)
+    : RecyclerView.Adapter<AvatarCharacterViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AvatarCharacterViewHolder {
         val binding = ItemListBinding.inflate(LayoutInflater.from(parent.context))
 
@@ -19,7 +21,7 @@ class AvatarCharacterAdapter(private val characters: List<AvatarCharacter>) : Re
     override fun onBindViewHolder(holder: AvatarCharacterViewHolder, position: Int) {
         val character = characters[position]
 
-        holder.bind(character)
+        holder.bind(character, clickListener)
 
         Glide.with(holder.itemView.context)
             .load(character.photo)
