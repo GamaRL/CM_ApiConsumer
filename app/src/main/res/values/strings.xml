@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">AvatarProject</string>
+    <string name="genre">Género</string>
+    <string name="profession">Profesión</string>
+    <string name="position">Posición</string>
 </resources>

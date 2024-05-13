@@ -23,4 +23,7 @@ data class AvatarCharacterDetail (
 
     @SerializedName("profession")
     val profession: String,
+
+    @SerializedName("weapon")
+    val weapon: String?
 )

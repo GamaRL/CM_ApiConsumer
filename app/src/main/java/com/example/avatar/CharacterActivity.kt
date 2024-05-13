@@ -40,9 +40,6 @@ class CharacterActivity : AppCompatActivity() {
 
         val call: Call<AvatarCharacterDetail> = apiService.getCharacterById(characterId)
 
-
-
-
         call.enqueue(object: Callback<AvatarCharacterDetail> {
             override fun onResponse(
                 p0: Call<AvatarCharacterDetail>,
@@ -50,7 +47,24 @@ class CharacterActivity : AppCompatActivity() {
             ) {
                 response.body()?.let { avatarCharacter ->
                     binding.tvName.text = avatarCharacter.name
+                    binding.tvGenreValue.text = avatarCharacter.gender
+                    binding.tvProfessionValue.text = avatarCharacter.profession
+                    binding.tvPositionValue.text = avatarCharacter.position
 
+
+                    if (!avatarCharacter.weapon.isNullOrBlank()) {
+                        if (avatarCharacter.weapon.contains("Air"))
+                            binding.ivAir.setImageResource(R.drawable.air_active)
+
+                        if (avatarCharacter.weapon.contains("Water"))
+                            binding.ivWater.setImageResource(R.drawable.water_active)
+
+                        if (avatarCharacter.weapon.contains("Fire"))
+                            binding.ivFire.setImageResource(R.drawable.fire_active)
+
+                        if (avatarCharacter.weapon.contains("Earth"))
+                            binding.ivEarth.setImageResource(R.drawable.earth_active)
+                    }
                     Glide.with(binding.imageView3.context)
                         .load(avatarCharacter.photo)
                         .into(binding.imageView3)
