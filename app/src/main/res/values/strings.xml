@@ -3,4 +3,6 @@
     <string name="genre">Género</string>
     <string name="profession">Profesión</string>
     <string name="position">Posición</string>
+    <string name="error_message">No se ha podido establecer la conexión con el servidor</string>
+    <string name="reload">Volver a interntar</string>
 </resources>

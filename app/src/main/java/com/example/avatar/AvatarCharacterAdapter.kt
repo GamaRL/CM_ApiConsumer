@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.avatar.databinding.ItemListBinding
 import com.example.avatar.models.AvatarCharacter
-import com.example.avatar.models.AvatarCharacterDetail
 
 class AvatarCharacterAdapter(private val characters: List<AvatarCharacter>, private val clickListener: (AvatarCharacter) -> Unit)
     : RecyclerView.Adapter<AvatarCharacterViewHolder>() {
@@ -25,6 +24,7 @@ class AvatarCharacterAdapter(private val characters: List<AvatarCharacter>, priv
 
         Glide.with(holder.itemView.context)
             .load(character.photo)
+            .placeholder(R.mipmap.ic_character)
             .into(holder.imageView())
     }
 }

@@ -1,15 +1,10 @@
 package com.example.avatar
 
+import android.content.Intent
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.example.avatar.databinding.ActivityCharacterBinding
-import com.example.avatar.databinding.ActivityMainBinding
-import com.example.avatar.models.AvatarCharacter
 import com.example.avatar.models.AvatarCharacterDetail
 import com.example.avatar.services.ApiService
 import com.example.avatar.utils.Constants
@@ -21,13 +16,26 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class CharacterActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityCharacterBinding;
+    private lateinit var binding: ActivityCharacterBinding
+    private var avatarCharacterDetail: AvatarCharacterDetail? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityCharacterBinding.inflate(layoutInflater)
 
         setContentView(binding.root)
+
+        fetchData()
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        if (avatarCharacterDetail == null)
+            fetchData()
+    }
+
+    private fun fetchData() {
 
         val characterId = intent.extras?.getString("id").orEmpty()
 
@@ -67,12 +75,16 @@ class CharacterActivity : AppCompatActivity() {
                     }
                     Glide.with(binding.imageView3.context)
                         .load(avatarCharacter.photo)
+                        .placeholder(R.mipmap.ic_character)
                         .into(binding.imageView3)
                 }
             }
 
             override fun onFailure(p0: Call<AvatarCharacterDetail>, p1: Throwable) {
-                TODO("Not yet implemented")
+
+                val intent = Intent(this@CharacterActivity, ConnectionErrorActivity::class.java)
+
+                startActivity(intent)
             }
         })
     }

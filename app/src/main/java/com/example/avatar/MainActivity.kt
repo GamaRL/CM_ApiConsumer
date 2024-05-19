@@ -2,15 +2,10 @@ package com.example.avatar
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.example.avatar.databinding.ActivityMainBinding
 import com.example.avatar.models.AvatarCharacter
-import com.example.avatar.models.AvatarCharacterDetail
 import com.example.avatar.services.ApiService
 import com.example.avatar.utils.Constants
 import retrofit2.Call
@@ -21,7 +16,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var binding: ActivityMainBinding;
+    private lateinit var binding: ActivityMainBinding
+    private var characterList : List<AvatarCharacter> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,6 +25,18 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
 
         setContentView(binding.root)
+
+        fetchData()
+    }
+
+    override fun onStart() {
+        super.onStart()
+
+        if (characterList.isEmpty())
+            fetchData()
+    }
+
+    private fun fetchData() {
 
         val retrofit = Retrofit.Builder()
             .baseUrl(Constants.BASE_URL)
@@ -45,8 +53,9 @@ class MainActivity : AppCompatActivity() {
                 response: Response<List<AvatarCharacter>>
             ) {
                 response.body()?.let {
-                    avatarCharacters ->
+                        avatarCharacters ->
                     val characterAdapter = AvatarCharacterAdapter(avatarCharacters, ::showDetails)
+                    characterList = avatarCharacters
 
                     binding.rvMain.apply {
                         layoutManager = LinearLayoutManager(this@MainActivity)
@@ -56,7 +65,9 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onFailure(p0: Call<List<AvatarCharacter>>, p1: Throwable) {
-                Toast.makeText(this@MainActivity, "No hay conexión disponible", Toast.LENGTH_SHORT).show()
+                val intent = Intent(this@MainActivity, ConnectionErrorActivity::class.java)
+
+                startActivity(intent)
             }
         })
     }

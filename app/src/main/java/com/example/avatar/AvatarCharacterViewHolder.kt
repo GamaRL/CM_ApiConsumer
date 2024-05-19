@@ -4,7 +4,6 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.avatar.databinding.ItemListBinding
 import com.example.avatar.models.AvatarCharacter
-import com.example.avatar.models.AvatarCharacterDetail
 
 class AvatarCharacterViewHolder(private val binding: ItemListBinding) :
     RecyclerView.ViewHolder(binding.root){
